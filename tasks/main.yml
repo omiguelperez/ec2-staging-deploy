@@ -229,10 +229,7 @@
         services:
           - django
           - postgres
-          - celeryworker
           - redis
-          - flower
-          - celerybeat
         state: present
       register: run_backend_output
 
