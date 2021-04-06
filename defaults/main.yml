@@ -1,2 +1,22 @@
 ---
 # defaults file for fzacademy-staging-deployment
+
+# AWS config
+region: sa-east-1
+
+# Git repositories
+deploy_repo: fzacademy-deploy
+backend_repo: fzacademy-api
+client_repo: fzacademy-ssr
+
+# Service config
+docker_network: fzacademy_network
+services:
+  - 3.web
+  - 2.backend
+  - 1.lb
+
+# Keys
+github_ssh_keys:
+  - id_rsa.pub
+  - id_rsa
