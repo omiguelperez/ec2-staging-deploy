@@ -1,5 +1,5 @@
 ---
-# defaults file for fzacademy-staging-deployment
+# defaults file for ansible-role-fzacademy-staging-deploy
 
 # AWS config
 region: sa-east-1

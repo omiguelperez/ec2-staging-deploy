@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - fzacademy-staging-deployment
+    - ansible-role-fzacademy-staging-deploy
