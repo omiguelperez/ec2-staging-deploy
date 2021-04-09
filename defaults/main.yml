@@ -16,6 +16,14 @@ services:
   - 2.backend
   - 1.lb
 
+docker_services:
+  - django
+  - postgres
+  - redis
+  - celeryworker
+  - celerybeat
+  - flower
+
 # Keys
 github_ssh_keys:
   - id_rsa.pub

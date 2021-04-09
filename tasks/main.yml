@@ -226,10 +226,7 @@
         files:
           - "backend.push.yml"
           - "backend.deploy.yml"
-        services:
-          - django
-          - postgres
-          - redis
+        services: {{ docker_services }}
         state: present
       register: run_backend_output
 
