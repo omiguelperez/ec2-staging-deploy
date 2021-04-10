@@ -101,21 +101,21 @@
     - name: Clone deploy repository
       tags: [ 'deploy' ]
       git:
-        repo: "git@github.com:FZ-academia/{{ deploy_repo }}.git"
+        repo: "git@github.com:{{github_org_name}}/{{ deploy_repo }}.git"
         dest: "~/{{ deploy_repo }}"
         update: yes
         force: yes
 
     - name: Clone client repository
       git:
-        repo: "git@github.com:FZ-academia/{{ client_repo }}.git"
-        dest: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/3.web/data"
+        repo: "git@github.com:{{github_org_name}}/{{ client_repo }}.git"
+        dest: "~/{{ deploy_repo }}/src/{{project_domain}}/3.web/data"
         update: yes
 
     - name: Clone backend repository
       git:
-        repo: "git@github.com:FZ-academia/{{ backend_repo }}.git"
-        dest: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/2.backend/data"
+        repo: "git@github.com:{{github_org_name}}/{{ backend_repo }}.git"
+        dest: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend/data"
         update: yes
 
 
@@ -144,7 +144,7 @@
 
     - name: Kill nginx service
       community.docker.docker_compose:
-        project_src: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/1.lb/"
+        project_src: "~/{{ deploy_repo }}/src/{{project_domain}}/1.lb/"
         build: no
         stopped: yes
         files:
@@ -152,7 +152,7 @@
 
     - name: Kill backend service
       community.docker.docker_compose:
-        project_src: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/2.backend/"
+        project_src: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend/"
         build: no
         stopped: yes
         files:
@@ -160,7 +160,7 @@
 
     - name: Kill web service
       community.docker.docker_compose:
-        project_src: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/3.web/"
+        project_src: "~/{{ deploy_repo }}/src/{{project_domain}}/3.web/"
         build: no
         stopped: yes
         files:
@@ -177,23 +177,23 @@
       shell: |
         docker-compose -f web.push.yml -f web.deploy.yml pull
       args:
-        chdir: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/3.web"
+        chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/3.web"
 
     - name: Pull backend service
       shell: |
         docker-compose -f backend.push.yml -f backend.deploy.yml pull
       args:
-        chdir: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/2.backend"
+        chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend"
 
     - name: Pull nginx service
       shell: |
         docker-compose -f lb.push.yml -f lb.deploy.yml pull
       args:
-        chdir: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/1.lb"
+        chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/1.lb"
 
     - name: Run web service
       community.docker.docker_compose:
-        project_src: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/3.web/"
+        project_src: "~/{{ deploy_repo }}/src/{{project_domain}}/3.web/"
         build: no
         pull: yes
         files:
@@ -207,7 +207,7 @@
           -f backend.push.yml -f backend.deploy.yml \
           run --rm django python manage.py compilemessages
       args:
-        chdir: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/2.backend"
+        chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend"
 
     - name: Apply backend migrations
       tags: [ 'migrate' ]
@@ -216,23 +216,25 @@
           -f backend.push.yml -f backend.deploy.yml \
           run --rm django python manage.py migrate
       args:
-        chdir: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/2.backend"
+        chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend"
 
     - name: Run backend service
       community.docker.docker_compose:
-        project_src: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/2.backend/"
+        project_src: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend/"
         build: no
         pull: yes
         files:
           - "backend.push.yml"
           - "backend.deploy.yml"
-        services: {{ docker_services }}
+        services:
+          - {{item}}
+        with_items: {{docker_services}}
         state: present
       register: run_backend_output
 
     - name: Run nginx service
       community.docker.docker_compose:
-        project_src: "~/{{ deploy_repo }}/src/fzacademia-test.xyz/1.lb/"
+        project_src: "~/{{ deploy_repo }}/src/{{project_domain}}/1.lb/"
         build: no
         pull: yes
         files:

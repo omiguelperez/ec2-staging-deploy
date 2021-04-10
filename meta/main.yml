@@ -1,7 +1,6 @@
 galaxy_info:
   author: Oscar Pérez
-  description: FZ academia Staging server deployment
-  company: FZ academia
+  description: Ansible role for basic deployment to servers with docker compose
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value

@@ -1,4 +1,4 @@
-omiguelperez.ansible_role_fzacademy_staging_deploy
+omiguelperez.ec2_staging_deploy
 =========
 
 With this role we can deploy FZ academia platform to staging machines.
@@ -7,6 +7,13 @@ With this role we can deploy FZ academia platform to staging machines.
 Role Variables
 --------------
 
+Global vars:
+```yml
+github_org_name: your_org_name
+project_domain: yourdomain.com
+```
+
+
 AWS config vars:
 ```yml
 region: sa-east-1
@@ -14,15 +21,15 @@ region: sa-east-1
 
 Github repos vars:
 ```yml
-deploy_repo: fzacademy-deploy
-backend_repo: fzacademy-api
-client_repo: fzacademy-ssr
+deploy_repo: org-deploy
+backend_repo: org-backend
+client_repo: org-web
 ```
 
 Docker services config vars:
 
 ```yml
-docker_network: fzacademy_network
+docker_network: project_network
 services:
   - 3.web
   - 2.backend
@@ -43,7 +50,7 @@ Example Playbook
 ```yml
     - hosts: servers
       roles:
-         - { role: omiguelperez.ansible_role_fzacademy_staging_deploy }
+         - { role: omiguelperez.ec2_staging_deploy }
 ```
 
 License
