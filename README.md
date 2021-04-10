@@ -1,7 +1,7 @@
 omiguelperez.ec2_staging_deploy
 =========
 
-With this role we can deploy FZ academia platform to staging machines.
+With this role we can deploy services to staging machines.
 
 
 Role Variables
