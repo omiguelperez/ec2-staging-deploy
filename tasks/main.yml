@@ -228,8 +228,8 @@
           - "backend.deploy.yml"
         services:
           - {{item}}
-        with_items: {{docker_services}}
         state: present
+      with_items: {{docker_services}}
       register: run_backend_output
 
     - name: Run nginx service
