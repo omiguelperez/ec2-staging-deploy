@@ -227,7 +227,7 @@
           - "backend.push.yml"
           - "backend.deploy.yml"
         services:
-          - {{item}}
+          - "{{ item }}"
         state: present
       with_items:
         - "{{ docker_services }}"
