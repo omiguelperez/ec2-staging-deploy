@@ -137,6 +137,12 @@
         volumes: no
         builder_cache: yes
 
+    - name: Ensure space cleanup
+      shell: |
+        docker rm -f $(docker ps -aq)
+        docker rmi -f $(docker ps -aq)
+        rm -rfv /var/logs
+
     - name: Create a network
       community.docker.docker_network:
         name: "{{ docker_network }}"
