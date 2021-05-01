@@ -17,6 +17,7 @@ project_domain: yourdomain.com
 AWS config vars:
 ```yml
 region: sa-east-1
+ecr_environment: staging
 ```
 
 Github repos vars:

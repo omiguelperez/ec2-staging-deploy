@@ -126,6 +126,7 @@
     AWS_ACCESS_KEY_ID: "{{ ec2_access_key }}"
     AWS_SECRET_ACCESS_KEY: "{{ ec2_secret_key }}"
     AWS_DEFAULT_REGION: "{{ region }}"
+    ECR_ENVIRONMENT: "{{ ecr_environment }}"
     TAGVERSION: latest
   block:
 

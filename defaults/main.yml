@@ -3,6 +3,7 @@
 
 # AWS config
 region: sa-east-1
+ecr_environment: staging
 
 # Git repositories
 deploy_repo: deploy
