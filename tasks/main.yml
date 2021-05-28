@@ -198,16 +198,6 @@
       args:
         chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/1.lb"
 
-    - name: Run web service
-      community.docker.docker_compose:
-        project_src: "~/{{ deploy_repo }}/src/{{project_domain}}/3.web/"
-        build: no
-        pull: yes
-        files:
-          - "web.push.yml"
-          - "web.deploy.yml"
-      register: run_web_output
-
     - name: Compile django translations
       shell: |
         docker-compose \
@@ -224,6 +214,16 @@
           run --rm django python manage.py migrate
       args:
         chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend"
+
+    - name: Run web service
+      community.docker.docker_compose:
+        project_src: "~/{{ deploy_repo }}/src/{{project_domain}}/3.web/"
+        build: no
+        pull: yes
+        files:
+          - "web.push.yml"
+          - "web.deploy.yml"
+      register: run_web_output
 
     - name: Run backend service
       community.docker.docker_compose:
