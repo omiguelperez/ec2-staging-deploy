@@ -198,23 +198,6 @@
       args:
         chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/1.lb"
 
-    - name: Compile django translations
-      shell: |
-        docker-compose \
-          -f backend.push.yml -f backend.deploy.yml \
-          run --rm django python manage.py compilemessages
-      args:
-        chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend"
-
-    - name: Apply backend migrations
-      tags: [ 'migrate' ]
-      shell: |
-        docker-compose \
-          -f backend.push.yml -f backend.deploy.yml \
-          run --rm django python manage.py migrate
-      args:
-        chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend"
-
     - name: Run web service
       community.docker.docker_compose:
         project_src: "~/{{ deploy_repo }}/src/{{project_domain}}/3.web/"
@@ -248,3 +231,20 @@
           - "lb.push.yml"
           - "lb.deploy.yml"
       register: run_lb_output
+
+    - name: Compile django translations
+      shell: |
+        docker-compose \
+          -f backend.push.yml -f backend.deploy.yml \
+          run --rm django python manage.py compilemessages
+      args:
+        chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend"
+
+    - name: Apply backend migrations
+      tags: [ 'migrate' ]
+      shell: |
+        docker-compose \
+          -f backend.push.yml -f backend.deploy.yml \
+          run --rm django python manage.py migrate
+      args:
+        chdir: "~/{{ deploy_repo }}/src/{{project_domain}}/2.backend"
