@@ -93,6 +93,7 @@
         src="ssh_keys/github/{{ item }}"
         dest="~/.ssh/{{ item }}"
         mode=0600
+        remote_src=yes
       with_items: "{{ github_ssh_keys }}"
 
     - name: Register GitHub fingerprint
